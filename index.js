@@ -14,11 +14,12 @@ const answer = await checkbox({
 function getEligibleFiles() {
   try {
     const result = String(execSync('git status --porcelain'))
-    if (result === '') {
+    const lines = result.split('\n').filter(Boolean)
+
+    if (lines.length === 0) {
+      console.log(MESSAGE_NO_CHANGES_DETECTED)
       return
     }
-
-    const lines = result.split('\n').filter(Boolean)
 
     return lines.map(lineToFile)
 
