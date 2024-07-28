@@ -1,34 +1,45 @@
 import { checkbox, Separator } from '@inquirer/prompts';
 import { execSync } from 'child_process';
-import { ERROR_GIT_STATUS_RETRIEVAL, MESSAGE_NO_CHANGES_DETECTED } from './constants.js';
+import { compareFilesForSort, ERROR_GIT_STATUS_RETRIEVAL, getStatusIsChecked, GIT_LINE_TO_STATUS, MESSAGE_NO_CHANGES_DETECTED, STATUS_TO_DISPLAY } from './constants.js';
 
-getEligibleFiles()
+const files = getEligibleFiles()
 
-// const answer = await checkbox({
-//   message: 'Select a package manager',
-//   choices: [
-//     { name: 'npm', value: 'npm' },
-//     { name: 'yarn', value: 'yarn' },
-//     // new Separator(),
-//     { name: 'pnpm', value: 'pnpm', disabled: true },
-//     { name: 'yarn2', value: 'yarn2' },
-//     {
-//       name: 'pnpm',
-//       value: 'pnpm',
-//       disabled: '(pnpm is not available)',
-//     },
-//   ],
-// });
+const choices = getChoices(files)
 
-async function getEligibleFiles() {
+const answer = await checkbox({
+  message: "Select files to stage",
+  choices
+});
+
+function getEligibleFiles() {
   try {
     const result = String(execSync('git status --porcelain'))
-
     if (result === '') {
-      console.log(MESSAGE_NO_CHANGES_DETECTED)
+      return
     }
-  } catch (error) {
-    console.error(ERROR_GIT_STATUS_RETRIEVAL)
-  }
 
+    const lines = result.split('\n').filter(Boolean)
+
+    return lines.map(lineToFile)
+
+  } catch (error) {
+    console.log(ERROR_GIT_STATUS_RETRIEVAL)
+  }
+}
+
+function lineToFile(line) {
+  // TODO: get individual files from untracked directory
+
+  return {
+    filename: line.slice(3),
+    status: GIT_LINE_TO_STATUS[line.slice(0, 3)]
+  }
+}
+
+function getChoices(files) {
+  return files.sort(compareFilesForSort).map(file => ({
+    filename: file.filename,
+    checked: getStatusIsChecked(file),
+    value: `${STATUS_TO_DISPLAY[file.status]} ${file.filename}`,
+  }))
 }
