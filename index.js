@@ -1,6 +1,6 @@
 import { checkbox, Separator } from '@inquirer/prompts';
 import { execSync } from 'child_process';
-import { ERROR_GIT_STATUS_RETRIEVAL } from './constants';
+import { ERROR_GIT_STATUS_RETRIEVAL, MESSAGE_NO_CHANGES_DETECTED } from './constants.js';
 
 getEligibleFiles()
 
@@ -22,8 +22,11 @@ getEligibleFiles()
 
 async function getEligibleFiles() {
   try {
-    const result = execSync('git status --porcelain')
-    console.log(String(result))
+    const result = String(execSync('git status --porcelain'))
+
+    if (result === '') {
+      console.log(MESSAGE_NO_CHANGES_DETECTED)
+    }
   } catch (error) {
     console.error(ERROR_GIT_STATUS_RETRIEVAL)
   }
