@@ -1,0 +1,13 @@
+{
+  "name": "giga-add-js",
+  "version": "1.0.0",
+  "description": "Lightning fast, muscle memory git add wrapper",
+  "type": "module",
+  "main": "index.js",
+  "author": "Brian Travis",
+  "license": "MIT",
+  "dependencies": {
+    "@inquirer/prompts": "^5.3.2",
+    "@inquirer/select": "^2.4.2"
+  }
+}
