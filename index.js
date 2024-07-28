@@ -1,16 +1,29 @@
 import { checkbox, Separator } from '@inquirer/prompts';
 import { execSync } from 'child_process';
-import { compareFilesForSort, ERROR_GIT_STATUS_RETRIEVAL, getStatusFromLine, getStatusIsChecked, MESSAGE_NO_CHANGES_DETECTED, STATUS_TO_DISPLAY } from './constants.js';
+import { compareFilesForSort, ERROR_GIT_STATUS_RETRIEVAL, ERROR_UNKNOWN_ERROR, getStatusFromLine, getStatusIsChecked, MESSAGE_NO_CHANGES_DETECTED, STATUS_TO_DISPLAY } from './constants.js';
 import { logger } from './utils.js';
 
-const files = getEligibleFiles()
+try {
+  await main()
+} catch (error) {
+  if (String(error).includes('User force closed the prompt')) {
+    process.exit()
+  }
 
-const choices = getChoices(files)
+  logger.logError(ERROR_UNKNOWN_ERROR, error)
+  process.exit()
+}
 
-const answer = await checkbox({
-  message: "Select files to stage",
-  choices
-});
+export async function main() {
+  const files = getEligibleFiles()
+
+  const choices = getChoices(files)
+
+  const answer = await checkbox({
+    message: "Select files to stage",
+    choices
+  });
+}
 
 function getEligibleFiles() {
   try {
