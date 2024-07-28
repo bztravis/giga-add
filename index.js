@@ -18,8 +18,8 @@ function getEligibleFiles() {
     const lines = result.split('\n').filter(Boolean)
 
     if (lines.length === 0) {
-      console.log(MESSAGE_NO_CHANGES_DETECTED)
-      return
+      logger.logFinalMessage(MESSAGE_NO_CHANGES_DETECTED)
+      process.exit()
     }
 
     return lines.map(lineToFile)

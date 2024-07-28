@@ -5,6 +5,11 @@ class Logger {
 
     process.exit()
   }
+
+  logFinalMessage(message) {
+    console.log(message)
+    process.exit()
+  }
 }
 
 export const logger = new Logger()

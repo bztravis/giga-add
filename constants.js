@@ -18,11 +18,11 @@ export function getStatusFromLine(line) {
     return "deleted"
   }
 
-  if (status.includes('M')) {
+  if (status === ' M') {
     return "modified"
   }
 
-  if (status.includes('A')) {
+  if (status === 'M ') {
     return "staged"
   }
 
@@ -36,15 +36,15 @@ export const STATUS_TO_DISPLAY = {
   "staged": "A"
 }
 
-export function compareFilesForSort(a, b) {
-  if (a.status > b.status) {
-    return 1 // after
-  }
-  else if (a.status < b.status) {
-    return -1 // before
-  }
+const STATUS_ORDER = {
+  "untracked": 0,
+  "modified": 1,
+  "deleted": 2,
+  "staged": 3
+}
 
-  return a.filename > b.filename ? 1 : 1
+export function compareFilesForSort(a, b) {
+  return STATUS_ORDER[a.status] - STATUS_ORDER[b.status]
 }
 
 export function getStatusIsChecked(file) {
