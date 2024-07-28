@@ -1,5 +1,6 @@
 import { checkbox, Separator } from '@inquirer/prompts';
 import { execSync } from 'child_process';
+import { ERROR_GIT_STATUS_RETRIEVAL } from './constants';
 
 getEligibleFiles()
 
@@ -24,7 +25,7 @@ async function getEligibleFiles() {
     const result = execSync('git status --porcelain')
     console.log(String(result))
   } catch (error) {
-    console.error('Error while getting files')
+    console.error(ERROR_GIT_STATUS_RETRIEVAL)
   }
 
 }
