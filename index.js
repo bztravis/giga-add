@@ -1,6 +1,7 @@
 import { checkbox, Separator } from '@inquirer/prompts';
 import { execSync } from 'child_process';
-import { compareFilesForSort, ERROR_GIT_STATUS_RETRIEVAL, getStatusIsChecked, GIT_LINE_TO_STATUS, MESSAGE_NO_CHANGES_DETECTED, STATUS_TO_DISPLAY } from './constants.js';
+import { compareFilesForSort, ERROR_GIT_STATUS_RETRIEVAL, getStatusFromLine, getStatusIsChecked, MESSAGE_NO_CHANGES_DETECTED, STATUS_TO_DISPLAY } from './constants.js';
+import { logger } from './utils.js';
 
 const files = getEligibleFiles()
 
@@ -24,7 +25,7 @@ function getEligibleFiles() {
     return lines.map(lineToFile)
 
   } catch (error) {
-    console.log(ERROR_GIT_STATUS_RETRIEVAL)
+    logger.logError(ERROR_GIT_STATUS_RETRIEVAL, error)
   }
 }
 
@@ -32,15 +33,15 @@ function lineToFile(line) {
   // TODO: get individual files from untracked directory
 
   return {
-    filename: line.slice(3),
-    status: GIT_LINE_TO_STATUS[line.slice(0, 3)]
+    filePath: line.slice(3),
+    status: getStatusFromLine(line)
   }
 }
 
 function getChoices(files) {
   return files.sort(compareFilesForSort).map(file => ({
-    filename: file.filename,
+    filePath: file.filePath,
     checked: getStatusIsChecked(file),
-    value: `${STATUS_TO_DISPLAY[file.status]} ${file.filename}`,
+    value: `${STATUS_TO_DISPLAY[file.status]} ${file.filePath}`,
   }))
 }

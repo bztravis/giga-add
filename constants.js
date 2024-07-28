@@ -6,17 +6,33 @@ export const MESSAGE_NO_CHANGES_DETECTED = 'No changes detected in the git repos
 
 export const ERROR_GIT_STATUS_RETRIEVAL = 'An error occurred while retrieving the git status. Make sure a git repository is initialized.';
 
-// Maps
 
-export const GIT_LINE_TO_STATUS = {
-  "?? ": "untracked",
-  " M ": "modified",
-  "A  ": "staged"
+export function getStatusFromLine(line) {
+  const status = line.slice(0, 2)
+
+  if (status.includes('?')) {
+    return "untracked"
+  }
+
+  if (status.includes('D')) {
+    return "deleted"
+  }
+
+  if (status.includes('M')) {
+    return "modified"
+  }
+
+  if (status.includes('A')) {
+    return "staged"
+  }
+
+  throw new Error(`Error thrown on line: ${line}`)
 }
 
 export const STATUS_TO_DISPLAY = {
   "untracked": "U",
   "modified": "M",
+  "deleted": "D",
   "staged": "A"
 }
 
