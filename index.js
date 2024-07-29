@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { checkbox, Separator } from '@inquirer/prompts';
 import { execSync } from 'child_process';
 import { compareFilesForSort, ERROR_GIT_STATUS_RETRIEVAL, ERROR_UNKNOWN_ERROR, getStatusFromLine, getStatusIsChecked, MAX_FILES_TO_DISPLAY, MESSAGE_NO_CHANGES_DETECTED, STATUS_TO_DISPLAY } from './constants.js';
