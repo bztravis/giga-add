@@ -1,6 +1,6 @@
 {
   "name": "giga-add",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "Lightning fast, muscle memory git add wrapper",
   "type": "module",
   "main": "index.js",
