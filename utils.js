@@ -1,7 +1,7 @@
 class Logger {
   logError(message, error) {
     console.error(message)
-    console.error(error)
+    // console.error(error)
 
     process.exit()
   }
