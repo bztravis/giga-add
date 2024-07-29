@@ -8,6 +8,7 @@ export const MESSAGE_NO_CHANGES_DETECTED = 'No changes detected in the git repos
 
 export const ERROR_UNKNOWN_ERROR = 'An unknown error occurred.'
 export const ERROR_GIT_STATUS_RETRIEVAL = 'An error occurred while retrieving the git status. Make sure a git repository is initialized.';
+// TODO: error when running not from git repo's root path
 
 
 export const STATUS_TO_DISPLAY = {
