@@ -16,7 +16,6 @@ try {
 
 export async function main() {
   const files = getEligibleFiles()
-  // console.log(files)
 
   const choices = getChoices(files)
 
@@ -26,28 +25,18 @@ export async function main() {
     choices
   });
 
-  execSync('echo "taco"')
-
-  // console.log(answer)
-
   const selectedFilePaths = new Set(answer.map(getFilePathFromFileValue))
-  // console.log(selectedFilePaths)
-
   files.forEach(file => { actOnFile(selectedFilePaths, file) })
 }
 
 function actOnFile(selectedFilePaths, file) {
-  // console.log(file.filePath)
 
   if (selectedFilePaths.has(file.filePath)) {
-    // console.log("stage")
     stageFilePath(file.filePath)
     return
   }
 
   unstageFilePath(file.filePath)
-  // console.log("unstaging")
-  // console.log("\n\n")
 }
 
 function getFilePathFromFileValue(value) {
@@ -60,7 +49,6 @@ function unstageFilePath(filePath) {
 
 function stageFilePath(filePath) {
   execSync(`git add ${filePath}`)
-  // console.log(result)
 }
 
 function getEligibleFiles() {
